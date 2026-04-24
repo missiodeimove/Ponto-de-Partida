@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Discipulado · Igreja Redenção</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --bg:      #F7F6F4;
+  --surface: #FFFFFF;
+  --border:  #E4E2DD;
+  --border2: #EEECE8;
+  --text:    #1C1917;
+  --text2:   #57534E;
+  --text3:   #A8A29E;
+  --gold:    #A67C52;
+  --gold-bg: #F5F0E8;
+  --green:   #4A7C5E;
+  --radius:  8px;
+  --shadow:  0 1px 2px rgba(0,0,0,0.05);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* ─── HOME ─── */
+.home-top {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 2.4rem 1.5rem 1.8rem;
+  text-align: center;
+}
+.logo-img { height: 34px; margin-bottom: 1.5rem; }
+.home-top h1 {
+  font-family: 'Lora', serif;
+  font-size: 1.5rem; font-weight: 400; line-height: 1.3;
+  color: var(--text); margin-bottom: 0.3rem;
+}
+.home-top h1 em { font-style: italic; color: var(--gold); }
+.home-top .cap {
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text3); font-weight: 500;
+}
+
+.how-block {
+  margin: 1.2rem 1.5rem 0;
+  background: var(--gold-bg);
+  border: 1px solid #E8DDD0;
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+}
+.how-ttl { font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:0.7rem; }
+.how-row { display:flex; align-items:flex-start; gap:0.65rem; margin-bottom:0.4rem; }
+.how-row:last-child { margin-bottom:0; }
+.how-icon { font-size:0.85rem; flex-shrink:0; margin-top:0.05rem; }
+.how-text { font-size:0.76rem; line-height:1.5; color:var(--text2); }
+.how-text b { color:var(--text); font-weight:500; }
+
+.sec-label {
+  padding: 1.4rem 1.5rem 0.55rem;
+  font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--text3); font-weight:600;
+}
+
+.study-list { padding:0 1.5rem 5rem; display:flex; flex-direction:column; gap:0.45rem; }
+
+.study-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.95rem 1.1rem;
+  display: flex; align-items:center; gap:0.9rem;
+  cursor: pointer; box-shadow: var(--shadow);
+  transition: border-color 0.2s, background 0.15s;
+  -webkit-user-select:none;
+}
+.study-card:active { background: var(--bg); }
+.study-card.done { border-color: #C4A882; }
+
+.s-num {
+  width:30px; height:30px; border-radius:50%;
+  border:1.5px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.62rem; font-weight:600; color:var(--text3);
+  flex-shrink:0; transition:all 0.2s;
+}
+.study-card.done .s-num { background:var(--gold-bg); border-color:#C4A882; color:var(--gold); }
+
+.s-info { flex:1; min-width:0; }
+.s-name { font-size:0.87rem; font-weight:500; color:var(--text); margin-bottom:0.1rem; }
+.s-desc { font-size:0.7rem; color:var(--text3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.s-arrow { font-size:0.8rem; color:var(--text3); flex-shrink:0; }
+.study-card.done .s-arrow { color:var(--gold); }
+
+/* ─── STUDY ─── */
+.study-topbar {
+  position:sticky; top:0; z-index:20;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:0.8rem 1.2rem;
+  display:flex; align-items:center; gap:0.8rem;
+}
+.btn-back {
+  background:none; border:1px solid var(--border);
+  color:var(--text2); font-size:0.7rem; font-weight:500;
+  padding:0.4rem 0.75rem; border-radius:5px;
+  cursor:pointer; font-family:'Inter',sans-serif;
+  transition:background 0.15s; flex-shrink:0;
+}
+.btn-back:active { background:var(--bg); }
+.tb-info { flex:1; min-width:0; }
+.tb-num { font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+.tb-name { font-size:0.82rem; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.done-pill {
+  font-size:0.6rem; font-weight:600;
+  background:#EEF5F1; border:1px solid #B8D4C6;
+  color:var(--green); padding:0.2rem 0.5rem; border-radius:20px; flex-shrink:0;
+}
+
+.progress-bar { height:2px; background:var(--border2); }
+.progress-fill { height:100%; background:var(--gold); transition:width 0.4s ease; }
+
+.card-area { flex:1; position:relative; overflow:hidden; }
+
+.scard {
+  position:absolute; top:0; left:0; right:0;
+  padding:1.4rem 1.5rem 2rem;
+  opacity:0; transform:translateX(20px);
+  transition:opacity 0.28s ease, transform 0.28s ease;
+  pointer-events:none; overflow-y:auto;
+  max-height:calc(100vh - 165px);
+}
+.scard.active { opacity:1; transform:translateX(0); pointer-events:all; }
+.scard.exit-l { opacity:0; transform:translateX(-20px); }
+
+.c-label {
+  font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--gold); font-weight:600; margin-bottom:0.85rem;
+  display:flex; align-items:center; gap:0.6rem;
+}
+.c-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.c-title {
+  font-family:'Lora',serif;
+  font-size:1.4rem; font-weight:400; line-height:1.25;
+  color:var(--text); margin-bottom:1rem;
+}
+.c-title em { font-style:italic; color:var(--gold); }
+
+.c-body { font-size:0.845rem; line-height:1.8; color:var(--text2); font-weight:300; }
+.c-body p { margin-bottom:0.7rem; }
+.c-body p:last-child { margin-bottom:0; }
+.c-body strong { color:var(--text); font-weight:500; }
+
+.verse-box {
+  margin-top:1.1rem;
+  border-left:2px solid var(--gold);
+  background:var(--gold-bg);
+  padding:0.8rem 1rem;
+  border-radius:0 5px 5px 0;
+}
+.verse-box p {
+  font-family:'Lora',serif; font-style:italic;
+  font-size:0.95rem; line-height:1.55; color:var(--text); margin-bottom:0.25rem;
+}
+.verse-box cite {
+  font-size:0.58rem; font-weight:600; letter-spacing:0.15em;
+  text-transform:uppercase; color:var(--gold); font-style:normal;
+}
+
+.points-list { list-style:none; margin:0.7rem 0; }
+.points-list li {
+  display:flex; gap:0.6rem; align-items:flex-start;
+  font-size:0.83rem; line-height:1.65; color:var(--text2);
+  padding:0.48rem 0; border-bottom:1px solid var(--border2);
+}
+.points-list li:last-child { border-bottom:none; }
+.points-list li::before { content:'—'; color:var(--gold); flex-shrink:0; margin-top:0.05rem; }
+.points-list li strong { color:var(--text); font-weight:500; }
+
+.optional-box {
+  margin-top:1rem; background:var(--surface);
+  border:1px solid var(--border); border-radius:var(--radius);
+  padding:0.7rem 0.95rem;
+}
+.opt-label { font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text3); font-weight:600; margin-bottom:0.3rem; }
+.optional-box p { font-size:0.77rem; color:var(--text2); line-height:1.6; }
+
+/* Video */
+.video-thumb-wrap {
+  margin-bottom:0.9rem; border-radius:var(--radius); overflow:hidden;
+  border:1px solid var(--border); position:relative;
+  background:#111; display:block; text-decoration:none;
+}
+.video-thumb-wrap img { width:100%; display:block; aspect-ratio:16/9; object-fit:cover; opacity:0.92; }
+.play-btn {
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:56px; height:56px;
+  background:rgba(255,255,255,0.95); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 12px rgba(0,0,0,0.28);
+  transition: transform 0.15s;
+}
+.video-thumb-wrap:active .play-btn { transform:translate(-50%,-50%) scale(0.93); }
+.play-btn svg { margin-left:3px; }
+.video-label {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(transparent, rgba(0,0,0,0.55));
+  padding:1.2rem 0.9rem 0.7rem;
+  font-size:0.7rem; color:rgba(255,255,255,0.9);
+  font-weight:500; letter-spacing:0.04em;
+}
+.video-note { font-size:0.7rem; color:var(--text3); text-align:center; margin-top:0.5rem; }
+
+/* Final */
+.final-scard { text-align:center; }
+.final-icon { font-size:1.7rem; margin-bottom:0.85rem; }
+.complete-btn {
+  margin-top:1.2rem; width:100%;
+  background:var(--text); color:#fff; border:none;
+  padding:0.85rem; border-radius:var(--radius);
+  font-family:'Inter',sans-serif; font-size:0.76rem; font-weight:600;
+  letter-spacing:0.08em; text-transform:uppercase;
+  cursor:pointer; transition:opacity 0.2s;
+}
+.complete-btn:active { opacity:0.8; }
+.complete-btn.done-st { background:var(--green); }
+
+/* Nav */
+.study-nav {
+  position:sticky; bottom:0;
+  background:rgba(247,246,244,0.97); backdrop-filter:blur(8px);
+  border-top:1px solid var(--border);
+  padding:0.8rem 1.2rem;
+  display:flex; align-items:center; justify-content:space-between; gap:0.8rem;
+}
+.nav-btn {
+  background:none; border:1px solid var(--border);
+  color:var(--text2); font-family:'Inter',sans-serif;
+  font-size:0.68rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
+  padding:0.52rem 0.95rem; border-radius:5px;
+  cursor:pointer; transition:all 0.15s; min-width:68px;
+}
+.nav-btn:disabled { opacity:0.25; cursor:default; }
+.nav-btn.fwd:not(:disabled) { border-color:#C4A882; color:var(--gold); background:var(--gold-bg); }
+.nav-btn:not(:disabled):active { background:var(--bg); }
+
+.nav-dots { display:flex; gap:5px; align-items:center; justify-content:center; flex-wrap:wrap; max-width:90px; }
+.ndot { width:5px; height:5px; border-radius:50%; background:var(--border); transition:background 0.2s, transform 0.2s; }
+.ndot.active { background:var(--gold); transform:scale(1.4); }
+
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="home" class="screen active">
+  <div class="home-top">
+    <img class="logo-img" src="data:image/jpeg;base64,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" alt="Igreja Redenção">
+    <h1>Comunidade de <em>Discipulado</em></h1>
+    <div class="cap">Microlearning · Igreja Redenção</div>
+  </div>
+
+  <div class="how-block">
+    <div class="how-ttl">Como funciona</div>
+    <div class="how-row"><span class="how-icon">🎥</span><div class="how-text"><b>Assiste ao vídeo</b> — disponível em cada estudo</div></div>
+    <div class="how-row"><span class="how-icon">📝</span><div class="how-text"><b>Lê os cards</b> — navega pelos tópicos</div></div>
+    <div class="how-row"><span class="how-icon">🧠</span><div class="how-text"><b>Memoriza o versículo</b> — destacado em cada estudo</div></div>
+    <div class="how-row"><span class="how-icon">📖</span><div class="how-text"><b>(Opcional)</b> Lê o capítulo bíblico indicado</div></div>
+  </div>
+
+  <div class="sec-label">8 Estudos</div>
+  <div class="study-list" id="studyList"></div>
+</div>
+
+<!-- STUDY -->
+<div id="study" class="screen">
+  <div class="study-topbar">
+    <button class="btn-back" id="backBtn">← Voltar</button>
+    <div class="tb-info">
+      <div class="tb-num" id="topNum"></div>
+      <div class="tb-name" id="topName"></div>
+    </div>
+    <div class="done-pill" id="donePill" style="display:none">✓ Concluído</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="card-area" id="cardArea"></div>
+  <div class="study-nav">
+    <button class="nav-btn" id="prevBtn">← Ant.</button>
+    <div class="nav-dots" id="navDots"></div>
+    <button class="nav-btn fwd" id="nextBtn">Próx. →</button>
+  </div>
+</div>
+
+<script>
+const STUDIES = [
+  { id:1, title:"A Criação", sub:"Quem Deus é e quem nós somos", yt:"wcAifkNJTeg",
+    cards:[
+      { lbl:"Estudo 01", title:"O <em>Ponto de Partida</em>",
+        body:`<p>A fé cristã não se inicia na experiência humana, mas em <strong>Deus como Criador</strong> de todas as coisas. Antes de qualquer pergunta sobre quem somos, há uma resposta que precede tudo.</p>`,
+        verse:{t:"No princípio, Deus criou os céus e a terra.",r:"Gênesis 1:1"} },
+      { lbl:"Identidade", title:"Antes da função, <em>o ser</em>",
+        body:`<p>Nosso valor não está no que fazemos, mas em quem somos — criados com propósito eterno. Num mundo que mede as pessoas pelo desempenho, o Criador diz o contrário: tu tens valor antes de qualquer conquista.</p>`,
+        verse:{t:"Criou Deus o homem à sua imagem, à imagem de Deus o criou.",r:"Gênesis 1:27"} },
+      { lbl:"A Criação", title:"Com ordem, beleza <em>e intenção</em>",
+        pts:["<strong>Ex nihilo:</strong> Deus criou tudo do nada, com ordem, beleza e intenção.",
+             "<strong>Imagem e Semelhança:</strong> Homem e mulher são complementares, chamados à comunhão.",
+             "<strong>A Origem do Mal:</strong> O mal surge de uma rebelião espiritual fundada no orgulho e na rejeição à autoridade de Deus."],
+        verse:{t:"Deus viu tudo o que havia feito e era muito bom.",r:"Gênesis 1:31"},
+        opt:"Ler Gênesis capítulos 1 e 2" }
+    ]
+  },
+  { id:2, title:"O Problema", sub:"A raiz do pecado e suas consequências", yt:"b1Ao9jPm274",
+    cards:[
+      { lbl:"Estudo 02", title:"A raiz <em>do pecado</em>",
+        body:`<p>O problema não começa com ações — começa com uma escolha de direção. Aqui vemos a raiz do pecado e suas consequências na vida humana.</p>`,
+        verse:{t:"Pois todos pecaram e estão destituídos da glória de Deus.",r:"Romanos 3:23"} },
+      { lbl:"O Engano", title:"A dinâmica <em>da queda</em>",
+        pts:["<strong>Liberdade para Amar:</strong> Deus nos deu vontade própria, pois o amor verdadeiro só existe onde há escolha.",
+             "<strong>A Dinâmica do Engano:</strong> O pecado nasce da dúvida sobre Deus e se expressa em desejos desordenados.",
+             "<strong>As Três Mortes:</strong> A queda gera separação espiritual, fragilidade física e ruptura nos relacionamentos."],
+        verse:{t:"O salário do pecado é a morte, mas o dom gratuito de Deus é a vida eterna.",r:"Romanos 6:23"} },
+      { lbl:"Consequências", title:"A nova <em>condição humana</em>",
+        body:`<p>Medo, culpa e vergonha passam a dominar o coração humano, levando à fuga de Deus e à acusação do outro.</p><p>As tentativas humanas de encobrir o pecado são insuficientes. Deus provê redenção através de sacrifício.</p>`,
+        opt:"Ler Gênesis capítulo 3 e Romanos capítulo 3" }
+    ]
+  },
+  { id:3, title:"A Lei e a Graça", sub:"Como Deus age para restaurar o ser humano", yt:"5ZvzKD_9kLU",
+    cards:[
+      { lbl:"Estudo 03", title:"Deus como <em>Pai</em>, não como sistema",
+        body:`<p>A relação com Deus é baseada em <strong>pertencimento, não em desempenho</strong>. Graça antes das regras: Deus liberta antes de instruir — a obediência nasce da redenção, não o contrário.</p>`,
+        verse:{t:"Pois vocês são salvos pela graça, por meio da fé, e isto não vem de vocês, é dom de Deus.",r:"Efésios 2:8-9"} },
+      { lbl:"A Lei", title:"O que a Lei <em>revela</em>",
+        pts:["<strong>A Função da Lei:</strong> A Lei revela o pecado, mas não salva; ela aponta para a necessidade de um Salvador.",
+             "<strong>Da Lei à Cruz:</strong> Moisés revela a dívida; Jesus a paga completamente através do sacrifício.",
+             "<strong>Obediência como Resposta:</strong> Vivemos em obediência não para sermos aceitos, mas porque já fomos amados e salvos."],
+        verse:{t:"Cristo é o fim da lei para a justiça de todo aquele que crê.",r:"Romanos 10:4"},
+        opt:"Ler Êxodo capítulo 20 e Efésios capítulo 2" }
+    ]
+  },
+  { id:4, title:"Confiar", sub:"O relacionamento com Deus começa pela fé", yt:"gkEIxmSR5qE",
+    cards:[
+      { lbl:"Estudo 04", title:"Deus age <em>na bagunça</em>",
+        body:`<p>A humanidade vive num cenário de separação e injustiça. Deus não fica assistindo de longe — como um pai que entra numa cozinha cheia de cacos de vidro para resgatar o filho, Ele escolhe <strong>entrar na nossa realidade.</strong></p>`,
+        verse:{t:"Abraão creu em Deus, e isso lhe foi creditado como justiça.",r:"Romanos 4:3"} },
+      { lbl:"Confiança", title:"Aceitação como <em>ponto de partida</em>",
+        pts:["<strong>Relacionamento, não sistema:</strong> A solução de Deus não foi filosofia ou regras, mas um relacionamento pessoal com um homem comum: Abraão.",
+             "<strong>Confiança como 'Justiça':</strong> Abraão escolheu acreditar no impossível. Essa confiança foi creditada como justiça — não por ser perfeito, mas por confiar.",
+             "<strong>Obediência como Gratidão:</strong> Primeiro Deus liberta e ama; depois Ele dá as diretrizes. Obedecemos como resposta ao amor."],
+        opt:"Ler Gênesis 15 e Romanos 4" }
+    ]
+  },
+  { id:5, title:"Quem é Jesus?", sub:"A pergunta mais fundamental da história", yt:"oJXKjtVPDZE",
+    cards:[
+      { lbl:"Estudo 05", title:"Muito além de <em>um Mestre</em>",
+        body:`<p>Muitos o veem apenas como um grande líder. Mas a Bíblia o apresenta como o <strong>centro de toda a narrativa bíblica</strong>. Ele não é um personagem que entra na história; Ele é o autor dela.</p>`,
+        verse:{t:"Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.",r:"João 3:16"} },
+      { lbl:"O Diagnóstico", title:"A iniciativa <em>do amor</em>",
+        pts:["<strong>O Diagnóstico do Coração:</strong> O pecado não é apenas errar — é tentar construir a vida sem o Criador.",
+             "<strong>A Iniciativa do Amor:</strong> Deus não esperou que nos consertássemos. Ele veio até nós no nosso ponto mais baixo.",
+             "<strong>O Sacrifício Definitivo:</strong> Jesus se torna o 'Cordeiro de Deus', pagando o custo do pecado e restaurando a conexão com o Pai."],
+        verse:{t:"Eu sou o caminho, a verdade e a vida. Ninguém vem ao Pai, a não ser por mim.",r:"João 14:6"} },
+      { lbl:"Resposta", title:"<em>Arrependimento</em> e Fé",
+        body:`<p><strong>Arrependimento:</strong> Não é apenas sentir culpa, mas reconhecer o erro e mudar a rota completamente.</p><p><strong>Fé:</strong> Não é apenas acreditar intelectualmente — é o ato de entregar o controle da vida a Jesus. Uma nova vida que começa <strong>hoje.</strong></p>`,
+        opt:"Ler João capítulos 1 e 3" }
+    ]
+  },
+  { id:6, title:"Favor Imerecido", sub:"O conceito radical da graça", yt:"W_wjFuCx0P4",
+    cards:[
+      { lbl:"Estudo 06", title:"O fim <em>da barganha</em>",
+        body:`<p>Temos a tendência natural de negociar com Deus: <em>"Se o Senhor me ajudar, eu prometo..."</em> Vivemos num mundo de "não graça", onde tudo gira em torno de desempenho.</p><p><strong>O Evangelho é o contrário da religião:</strong> Religião é o esforço humano subindo até Deus. O Evangelho é Deus descendo até nós.</p>`,
+        verse:{t:"Pois vocês são salvos pela graça, por meio da fé, e isto não vem de vocês, é dom de Deus.",r:"Efésios 2:8-9"} },
+      { lbl:"A Graça", title:"A nova <em>matemática</em> de Deus",
+        pts:["<strong>Definição:</strong> Graça é favor imerecido. Um presente que não depende de quem recebe, mas da generosidade de quem dá.",
+             "<strong>A Nova Matemática:</strong> O nosso melhor dia não faz com que Ele nos ame mais, e o nosso pior dia não faz com que Ele nos ame menos.",
+             "<strong>Obediência como Resposta:</strong> A motivação muda de 'eu preciso' para 'eu quero'. Fazemos o bem porque já fomos amados e aceitos."],
+        opt:"Ler Lucas 15 (Filho Pródigo) e Mateus 20 (Trabalhadores na Vinha)" }
+    ]
+  },
+  { id:7, title:"A Fé", sub:"De escravos para filhos", yt:"qJU1Aa8CO_E",
+    cards:[
+      { lbl:"Estudo 07", title:"Mortos, <em>não doentes</em>",
+        body:`<p>A Bíblia não diz que estamos apenas fracos. O diagnóstico é claro: estávamos <strong>mortos em nossos delitos e pecados.</strong> Um morto não pode se salvar — a iniciativa do resgate precisa vir totalmente de Deus.</p>`,
+        verse:{t:"Ele vos deu vida, estando vós mortos nos vossos delitos e pecados.",r:"Efésios 2:1"} },
+      { lbl:"A Tríplice", title:"Mas <em>Deus</em>: a reviravolta",
+        body:`<p>Sem Cristo, o ser humano está preso por três forças: <strong>o mundo</strong> (valores contrários a Deus), <strong>o maligno</strong> (influência espiritual do mal) e <strong>a carne</strong> (natureza pecaminosa).</p><p>Aqui está uma das expressões mais poderosas do evangelho: <strong>"Mas Deus."</strong> A salvação não começa no homem. Começa em Deus.</p>`,
+        verse:{t:"Mas Deus, sendo rico em misericórdia, por causa do grande amor com que nos amou...",r:"Efésios 2:4-5"} },
+      { lbl:"3 Dimensões", title:"O que é <em>realmente</em> a fé",
+        pts:["<strong>Conhecimento:</strong> Saber quem Cristo é, sua obra na cruz e sua ressurreição.",
+             "<strong>Convicção:</strong> Crer que essa verdade é real e digna de confiança.",
+             "<strong>Entrega:</strong> Confiar pessoalmente em Cristo e render a vida a Ele — o passo decisivo."],
+        verse:{t:"Se com a tua boca confessares Jesus como Senhor e em teu coração creres...",r:"Romanos 10:9"} },
+      { lbl:"Modelo", title:"Clube vs. <em>Família</em>",
+        pts:["<strong>Modelo Clube:</strong> Aceitação depende do que fazes. Obedeces para ser aceito. O motor é o medo.",
+             "<strong>Modelo Família:</strong> Aceitação incondicional em Cristo. Obedeces porque já foste aceito. O motor é a gratidão.",
+             "<strong>Frutos, não Raízes:</strong> As boas obras não são a raiz da salvação, mas o fruto dela."],
+        verse:{t:"Pois somos feitura dele, criados em Cristo Jesus para boas obras.",r:"Efésios 2:10"},
+        opt:"Ler Efésios capítulo 2" }
+    ]
+  },
+  { id:8, title:"O Convite", sub:"A graça como ponto de partida", yt:"W9BtiUC_JuY",
+    cards:[
+      { lbl:"Estudo 08", title:"Uma pergunta que <em>muda tudo</em>",
+        body:`<p>Antes de falar sobre fé, doutrina ou regras, há uma pergunta: <em>"Quem é Jesus?"</em> Não é religiosa. Não é filosófica. É pessoal. E o ponto de partida dela tem um nome: <strong>graça.</strong></p>`,
+        verse:{t:"Venham a mim, todos os que estão cansados e sobrecarregados, e eu lhes darei descanso.",r:"Mateus 11:28"} },
+      { lbl:"O Abismo", title:"A condição <em>humana</em>",
+        pts:["<strong>Deus:</strong> Criador perfeito e Juiz justo a quem todos devemos prestar contas.",
+             "<strong>Homem:</strong> Criado para relacionamento com Deus, mas escolheu a rebelião.",
+             "<strong>Morte:</strong> Consequência do pecado — separação de Deus da qual não escapamos sozinhos."],
+        verse:{t:"O salário do pecado é a morte, mas o dom gratuito de Deus é a vida eterna em Cristo Jesus.",r:"Romanos 6:23"} },
+      { lbl:"A Ponte", title:"Deus toma <em>a iniciativa</em>",
+        body:`<p>Como o homem não pode se salvar, Deus constrói a ponte — através de Cristo. Na cruz, Jesus atuou como nosso <strong>substituto</strong>: carregou nossos pecados, recebeu o castigo que merecíamos.</p><p>Sua ressurreição provou que o sacrifício foi aceito.</p>`,
+        verse:{t:"Deus demonstra o seu amor pelo fato de Cristo ter morrido em nosso favor quando ainda éramos pecadores.",r:"Romanos 5:8"} },
+      { lbl:"Arrependimento", title:"Atravessar exige <em>decisão</em>",
+        pts:["<strong>Abandonar a rebelião:</strong> Admitir pessoalmente o pecado e decidir deixá-lo.",
+             "<strong>Reconhecer a insuficiência própria:</strong> Nossas boas obras não nos salvam.",
+             "<strong>Confiar em Cristo:</strong> Entregar a vida a Ele como único Salvador e Senhor."],
+        verse:{t:"Se confessarmos os nossos pecados, ele é fiel e justo para perdoar e nos purificar de toda injustiça.",r:"1 João 1:9"} },
+      { lbl:"Conversão", title:"Da <em>performance</em> à confiança",
+        body:`<p>Converter-se não é mudar de opinião — é mudar de dono. Abandonar a <strong>mentalidade de clube</strong> e abraçar a <strong>mentalidade de família</strong>.</p><p>O convite é de hoje. O momento de responder ao chamado da graça é o presente.</p>`,
+        verse:{t:"Eis que estou à porta e bato; se alguém ouvir a minha voz e abrir a porta, entrarei e cearei com ele.",r:"Apocalipse 3:20"} },
+      { lbl:"Ekklesia", title:"Conectados a um propósito <em>maior</em>",
+        pts:["<strong>O que é a Igreja?</strong> Não é um prédio, mas uma assembleia de pessoas que confessam que Jesus é o Senhor.",
+             "<strong>Batismo:</strong> Declaração pública de que morreste para a velha vida e ressuscitastes com Cristo.",
+             "<strong>Comunidade e Palavra:</strong> Ninguém cresce sozinho. Une-te a uma comunidade local e mantém a vida devocional diária."],
+        verse:{t:"Assim como o Pai me enviou, eu também os envio.",r:"João 20:21"} }
+    ]
+  }
+];
+
+let cur=null, curCard=0;
+let done=JSON.parse(localStorage.getItem('ir3')||'{}');
+
+function renderHome(){
+  const list=document.getElementById('studyList');
+  list.innerHTML='';
+  STUDIES.forEach(s=>{
+    const d=!!done[s.id], el=document.createElement('div');
+    el.className='study-card'+(d?' done':'');
+    el.innerHTML=`<div class="s-num">${String(s.id).padStart(2,'0')}</div>
+      <div class="s-info"><div class="s-name">${s.title}</div><div class="s-desc">${s.sub}</div></div>
+      <div class="s-arrow">${d?'✓':'›'}</div>`;
+    el.addEventListener('click',()=>openStudy(s));
+    list.appendChild(el);
+  });
+}
+
+function openStudy(s){
+  cur=s; curCard=0;
+  document.getElementById('home').classList.remove('active');
+  document.getElementById('study').classList.add('active');
+  document.getElementById('topNum').textContent=`Estudo ${String(s.id).padStart(2,'0')}`;
+  document.getElementById('topName').textContent=s.title;
+  document.getElementById('donePill').style.display=done[s.id]?'':'none';
+  buildCards(s); buildDots(s.cards.length+2); goTo(0);
+}
+
+function buildCards(s){
+  const area=document.getElementById('cardArea');
+  area.innerHTML='';
+  const total=s.cards.length+2;
+
+  // Video card
+  const vc=mk('div','scard'); vc.dataset.idx=0;
+  vc.innerHTML=`
+    <div class="c-label">Vídeo · ${s.title}</div>
+    <div class="c-title">Assiste <em>antes de começar</em></div>
+    <a class="video-thumb-wrap" href="https://youtu.be/${s.yt}" target="_blank" rel="noopener">
+      <img src="https://img.youtube.com/vi/${s.yt}/hqdefault.jpg" alt="Assistir no YouTube"
+           onerror="this.style.background='#1C1917';this.style.height='180px'">
+      <div class="play-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5z" fill="#1C1917"/></svg>
+      </div>
+      <div class="video-label">▶ Abrir no YouTube</div>
+    </a>
+    <p class="video-note">Toca na imagem — abre o YouTube →</p>`;
+  area.appendChild(vc);
+
+  // Content cards
+  s.cards.forEach((c,i)=>{
+    const el=mk('div','scard'); el.dataset.idx=i+1;
+    let h=`<div class="c-label">${c.lbl}</div><div class="c-title">${c.title}</div>`;
+    if(c.body) h+=`<div class="c-body">${c.body}</div>`;
+    if(c.pts){ h+='<ul class="points-list">'; c.pts.forEach(p=>h+=`<li>${p}</li>`); h+='</ul>'; }
+    if(c.verse) h+=`<div class="verse-box"><p>"${c.verse.t}"</p><cite>${c.verse.r}</cite></div>`;
+    if(c.opt) h+=`<div class="optional-box"><div class="opt-label">📖 Leitura Opcional</div><p>${c.opt}</p></div>`;
+    el.innerHTML=h; area.appendChild(el);
+  });
+
+  // Final card
+  const fc=mk('div','scard final-scard'); fc.dataset.idx=total-1;
+  const isDone=!!done[s.id];
+  fc.innerHTML=`
+    <div class="c-label">Concluído</div>
+    <div class="final-icon">✝</div>
+    <div class="c-title">Estudo <em>finalizado</em></div>
+    <div class="c-body"><p>Parabéns por concluir o Estudo ${String(s.id).padStart(2,'0')} — <strong>${s.title}</strong>.</p><p style="margin-top:0.5rem;font-style:italic;color:var(--text3)">"Um dia de cada vez. Bíblico. Simples. Transformador."</p></div>
+    <button class="complete-btn ${isDone?'done-st':''}" id="markBtn">${isDone?'✓ Marcado como concluído':'Marcar como concluído'}</button>`;
+  area.appendChild(fc);
+
+  document.getElementById('markBtn').addEventListener('click',()=>{
+    done[s.id]=true;
+    localStorage.setItem('ir3',JSON.stringify(done));
+    document.getElementById('markBtn').textContent='✓ Marcado como concluído';
+    document.getElementById('markBtn').classList.add('done-st');
+    document.getElementById('donePill').style.display='';
+    renderHome();
+  });
+}
+
+function buildDots(n){
+  const d=document.getElementById('navDots'); d.innerHTML='';
+  for(let i=0;i<n;i++){const dot=mk('div','ndot'); d.appendChild(dot);}
+}
+
+function goTo(idx){
+  const cards=document.querySelectorAll('.scard'), total=cards.length;
+  cards.forEach(c=>{
+    const ci=parseInt(c.dataset.idx);
+    c.classList.remove('active','exit-l');
+    if(ci===idx) c.classList.add('active');
+    else if(ci<idx) c.classList.add('exit-l');
+  });
+  curCard=idx;
+  document.querySelectorAll('.ndot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  document.getElementById('progressFill').style.width=((idx+1)/total*100)+'%';
+  const prev=document.getElementById('prevBtn'), next=document.getElementById('nextBtn');
+  prev.disabled=idx===0; next.disabled=idx===total-1;
+  next.textContent=idx===total-2?'Final →':'Próx. →';
+  document.querySelectorAll('.scard.active').forEach(c=>c.scrollTop=0);
+}
+
+document.getElementById('backBtn').addEventListener('click',()=>{
+  document.getElementById('study').classList.remove('active');
+  document.getElementById('home').classList.add('active');
+});
+document.getElementById('prevBtn').addEventListener('click',()=>{if(curCard>0)goTo(curCard-1);});
+document.getElementById('nextBtn').addEventListener('click',()=>{
+  const t=document.querySelectorAll('.scard').length;
+  if(curCard<t-1)goTo(curCard+1);
+});
+
+let sx=0;
+document.getElementById('cardArea').addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+document.getElementById('cardArea').addEventListener('touchend',e=>{
+  const d=sx-e.changedTouches[0].clientX,t=document.querySelectorAll('.scard').length;
+  if(d>50&&curCard<t-1)goTo(curCard+1);
+  if(d<-50&&curCard>0)goTo(curCard-1);
+},{passive:true});
+
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('study').classList.contains('active'))return;
+  const t=document.querySelectorAll('.scard').length;
+  if(e.key==='ArrowRight'&&curCard<t-1)goTo(curCard+1);
+  if(e.key==='ArrowLeft'&&curCard>0)goTo(curCard-1);
+});
+
+function mk(tag,cls){const e=document.createElement(tag);if(cls)e.className=cls;return e;}
+renderHome();
+</script>
+</body>
+</html>
